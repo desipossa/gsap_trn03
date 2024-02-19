@@ -93,6 +93,18 @@
             }
 
         }
+
+        .test3 .inner {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+        }
+
+        .test3 .inner>* {
+            border: 1px solid tomato;
+            height: 300px;
+            font-size: 40px;
+        }
     </style>
 </head>
 
@@ -123,6 +135,16 @@
     <section class="test3">
         <div class="txt">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo, officiis?
+        </div>
+        <div class="inner">
+            <div class="box"><a href="">box01</a></div>
+            <div class="box"><a href="">box02</a></div>
+            <div class="box"><a href="">box03</a></div>
+            <div class="box"><a href="">box04</a></div>
+            <div class="box"><a href="">box05</a></div>
+            <div class="box"><a href="">box06</a></div>
+            <div class="box"><a href="">box07</a></div>
+            <div class="box"><a href="">box08</a></div>
         </div>
     </section>
 
@@ -170,10 +192,10 @@
             scrollTrigger: {
                 trigger: ".test",
                 pin: true,
-                scrub: 1,
-                start: "top top",
+                scrub: true,
+                // start: "top top",
                 markers: true,
-                //end: "bottom +=12000",
+                end: '+=5000', // 스크롤량을 늘여줌.
             }
         });
 
@@ -183,7 +205,7 @@
                 pin: true,
                 scrub: 1,
                 //start: "top top",
-                markers: true,
+                //markers: true,
 
             }
         });
@@ -206,14 +228,58 @@
             })
             .from('.test .box3', {
                 x: 2000
-            });
+            })
+
 
         TextAni2
             .to('.test2 .txt', {
                 rotation: 360,
                 duration: 1,
                 //ease: "steps(5)"
+            });
+
+
+
+        const pages = gsap.utils.toArray('.test3');
+        // 1. 기준이 되는 아이템에 이름을 뿥여줌
+        const container = gsap.to(pages, {
+            //xPercent: -100 * (pages.length - 1),
+            ease: "none",
+            scrollTrigger: {
+                trigger: '.test3',
+                end: '+=5000', // 스크롤량을 늘여줌.
+                scrub: 0,
+                pin: true,
+                //snap: 1 / (pages.length - 1),//scrub: 0일 경우 작동하지 않음
+            }
+        });
+
+        // 2. 각각의 아ㅌ이템을 불러옴.
+        const eachItm = gsap.utils.toArray('.test3 .box');
+
+        eachItm.forEach((itm, idx) => {
+            let rd = Math.floor(Math.random() * 8 + 1);
+            console.log(rd)
+            gsap.from(itm, {
+                y: 200 * rd,
+                delay: 1 * rd,
+                ease: 'bounce',
+                // autoAlpha: 0,
+                stagger: {
+                    amount: 1,
+                    from: "random"
+                },
+                scrollTrigger: {
+                    trigger: itm,
+                    scrub: 1,
+                    //containerAnimation: container,
+                    //markers: true,
+                }
             })
+        });
+
+
+
 
 
     </script>
